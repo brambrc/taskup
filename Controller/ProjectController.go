@@ -143,3 +143,22 @@ func UpdateProject(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "Project updated successfully!"})
 
 }
+
+func DeleteProject(context *gin.Context) {
+
+	id := context.Param("id")
+
+	//convert id to uint
+	convert_id, err := strconv.Atoi(id)
+	unsignedNum := uint(convert_id)
+
+	if err != nil {
+
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+
+	}
+
+	_, err = Model.DeleteTaskMultiple(id)
+
+}

@@ -159,6 +159,24 @@ func DeleteProject(context *gin.Context) {
 
 	}
 
-	_, err = Model.DeleteTaskMultiple(id)
+	err = Model.DeleteTaskMultiple(id)
+
+	if err != nil {
+
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+
+	}
+
+	_, err = Model.DeleteProject(unsignedNum)
+
+	if err != nil {
+
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "Project deleted successfully!"})
 
 }

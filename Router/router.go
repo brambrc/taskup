@@ -43,6 +43,7 @@ func AuthRoutes(router *gin.RouterGroup) {
 func UserRoutes(router *gin.RouterGroup) {
 	//add protection middleware
 	router.POST("/change-data", Middleware.UserMiddleware(), Controller.ChangePassword)
+	router.GET("/get-user", Middleware.UserMiddleware(), Controller.GetUser)
 }
 
 func ProjectRoutes(router *gin.RouterGroup) {

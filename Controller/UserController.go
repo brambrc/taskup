@@ -53,3 +53,29 @@ func ChangePassword(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "User Data changed successfully!"})
 
 }
+
+func GetUser(context *gin.Context) {
+
+	token := context.Request.Header.Get("Authorization")
+
+	id, err := Model.GetAuthenticatedID(token)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	users, err := Model.GetUsers(id)
+
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	//remove password from response
+
+	users.Password = ""
+
+	context.JSON(http.StatusOK, gin.H{"users": users})
+
+}

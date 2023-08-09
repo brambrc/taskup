@@ -1,7 +1,6 @@
 package Model
 
 import (
-	"fmt"
 	"os"
 	"taskup/Database"
 
@@ -54,15 +53,12 @@ func GetAuthenticatedID(tokenString string) (uint, error) {
 
 	onlyToken := tokenString[len("Bearer "):]
 
-	fmt.Println("onlyToken", onlyToken)
 	token, _ := jwt.Parse(onlyToken, func(token *jwt.Token) (interface{}, error) {
 		return privateKey, nil
 	})
 
 	var claims = token.Claims.(jwt.MapClaims)
 	var id = claims["id"]
-
-	fmt.Println("claims id", claims["id"])
 
 	return uint(id.(float64)), nil
 
@@ -103,4 +99,13 @@ func FindUserByEmail(email string) (User, error) {
 		return User{}, err
 	}
 	return user, nil
+}
+
+func GetUsers(id uint) (*User, error) {
+	var user User
+	err := Database.Database.Where("id = ?", id).Find(&user).Error
+	if err != nil {
+		return &User{}, err
+	}
+	return &user, nil
 }

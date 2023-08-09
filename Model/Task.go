@@ -1,6 +1,7 @@
 package Model
 
 import (
+	"fmt"
 	"taskup/Database"
 
 	"gorm.io/gorm"
@@ -66,4 +67,29 @@ func DeleteTask(id uint) (*Task, error) {
 	}
 
 	return &task, nil
+}
+
+func DeleteTaskMultiple(id string) error {
+
+	if err := Database.Database.Where("id_project = ?", id).Delete(&Task{}).Error; err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func CountTotalTaskById(id string) int64 {
+	var total int64
+	fmt.Println("id project: ", id)
+	Database.Database.Model(&Task{}).Where("id_project = ?", id).Count(&total)
+
+	fmt.Println("total task: ", total)
+	return total
+}
+
+func CountFinishedTask(id string) int64 {
+	var total int64
+	Database.Database.Model(&Task{}).Where("id_project = ? AND status = ?", id, "Selesai").Count(&total)
+	return total
 }

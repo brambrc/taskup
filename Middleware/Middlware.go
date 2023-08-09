@@ -1,7 +1,6 @@
 package Middleware
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -30,12 +29,10 @@ func RoleMiddleware(role string) gin.HandlerFunc {
 				c.Next()
 			} else {
 				// return a forbidden status
-				fmt.Println("are we here? 3")
 				c.AbortWithStatus(http.StatusForbidden)
 
 			}
 		} else {
-			fmt.Println("are we here? 4")
 			// return a forbidden status
 			c.AbortWithStatus(http.StatusForbidden)
 		}
